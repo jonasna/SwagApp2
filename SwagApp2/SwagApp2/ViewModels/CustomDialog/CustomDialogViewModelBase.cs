@@ -28,6 +28,9 @@ namespace SwagApp2.ViewModels.CustomDialog
         public override void OnNavigatingTo(INavigationParameters parameters)
         {
             Completion = (TaskCompletionSource<bool>)parameters["Completion"];
+            Title = (string)parameters["Title"];
+            Message = (string)parameters["Message"];
+            BtnText = (string)parameters["BtnText"];
         }
     }
 }

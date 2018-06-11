@@ -12,9 +12,9 @@ using Xamarin.Forms.Xaml;
 namespace SwagApp2.Views.CustomDialog
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class CustomErrorDialog : CustomDialogBase
+	public partial class InfoDialog : CustomDialogBase
     {
-		public CustomErrorDialog ()
+		public InfoDialog()
 		{
 			InitializeComponent ();    
         }

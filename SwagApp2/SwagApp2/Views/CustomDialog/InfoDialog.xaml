@@ -1,0 +1,33 @@
+﻿<customDialog:CustomDialogBase xmlns="http://xamarin.com/schemas/2014/forms" 
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+                 xmlns:customDialog="clr-namespace:SwagApp2.Views.CustomDialog"
+                 prism:ViewModelLocator.AutowireViewModel="True"
+                 x:Class="SwagApp2.Views.CustomDialog.InfoDialog">
+
+    <customDialog:CustomDialogBase.Resources>
+        <customDialog:ErrorToColorValueConverter x:Key="BoolToColorConverter"/>
+    </customDialog:CustomDialogBase.Resources>
+
+    <Frame BorderColor="Transparent"
+           HasShadow="True"
+           VerticalOptions="Center"
+           HorizontalOptions="Center"
+           CornerRadius="10"
+           Padding="5"
+           BackgroundColor="{Binding IsErrorDialog, Converter={StaticResource BoolToColorConverter}}">
+
+        <StackLayout VerticalOptions="Center"
+                     HorizontalOptions="FillAndExpand"
+                     Padding="5"
+                     WidthRequest="200">
+
+            <Label Text="{Binding Title}" FontSize="Large" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Start" FontAttributes="Bold"  VerticalOptions="Fill"/>
+            <Label Text="{Binding Message}" FontSize="Medium" HorizontalOptions="FillAndExpand" FontAttributes="Bold" Margin="0,2,0,2"/>
+            <Button Text="{Binding BtnText}" Style="{StaticResource ButtonStyle}" Command="{Binding OkCommand}" Margin="0,5,0,0"/>
+        </StackLayout>
+
+    </Frame>
+
+
+</customDialog:CustomDialogBase>

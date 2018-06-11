@@ -14,7 +14,8 @@
             <Color x:Key="NavigationBackgroundColor">#8D775F</Color>
             <Color x:Key="ButtonColor">#F1F0CC</Color>
             <Color x:Key="InfoModalBackgroundColor">#9BC1BC</Color>
-            <Color x:Key="WarningModelBackgroundColor">#ED6A5A</Color>
+            <Color x:Key="WarningModalBackgroundColor">#ED6A5A</Color>
+            <Color x:Key="SuccesModalBackgroundColor">#89A34E</Color>
             <Color x:Key="GreenOkTextColor">#89A34E</Color>
 
             <Style x:Key="ButtonStyle" TargetType="Button">

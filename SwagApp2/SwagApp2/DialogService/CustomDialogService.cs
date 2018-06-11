@@ -16,17 +16,32 @@ namespace SwagApp2.DialogService
             _navigationService = navigationService;
         }
 
-        public async Task<bool> ShowErrorDialog(string title, string message, string btnText)
+        public async Task<bool> ShowErrorDialogAsync(string title, string message, string btnText)
         {
             var navParams = new NavigationParameters
             {
                 { "Title", title },
                 { "Message", message },
-                { "BtnText", btnText }
+                { "BtnText", btnText },
+                { "IsError", true}
             };
 
             // Navigate
-            return await Navigate(navParams, "CustomErrorDialog");
+            return await Navigate(navParams, "InfoDialog");
+        }
+
+        public async Task<bool> ShowInfoDialogAsync(string title, string message, string btnText)
+        {
+            var navParams = new NavigationParameters
+            {
+                { "Title", title },
+                { "Message", message },
+                { "BtnText", btnText },
+                { "IsError", false}
+            };
+
+            // Navigate
+            return await Navigate(navParams, "InfoDialog");
         }
 
         /// <summary>

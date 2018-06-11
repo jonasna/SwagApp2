@@ -6,6 +6,7 @@ using System.Linq;
 using Prism.Navigation;
 using Prism.Services;
 using SwagApp2.DataStores;
+using SwagApp2.DialogService;
 using SwagApp2.Models;
 using Xamarin.Forms;
 
@@ -14,10 +15,10 @@ namespace SwagApp2.ViewModels
 	public class UserSettingsPageViewModel : ViewModelBase
 	{
 	    private readonly IApplicationUserService _applicationUserService;
-	    private readonly IPageDialogService _dialogService;
+	    private readonly ICustomDialogService _dialogService;
 	    public UserSettingsPageViewModel(INavigationService navigationService,
 	        IApplicationUserService applicationUserService,
-	        IPageDialogService dialogService) : base(navigationService)
+	        ICustomDialogService dialogService) : base(navigationService)
 	    {
 	        Title = "Settings";
 	        _applicationUserService = applicationUserService;
@@ -84,7 +85,7 @@ namespace SwagApp2.ViewModels
 
 	        _applicationUserService.DisplayName = DisplayName;
 	        await _applicationUserService.SaveUserDataAsync();
-	        await _dialogService.DisplayAlertAsync("Saved", "Your information has been saved!", "Ok");
+	        await _dialogService.ShowInfoDialogAsync("Saved", "Your information has been saved!", "Ok");
 	        Validate();
         }
 

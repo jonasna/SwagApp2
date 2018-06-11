@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Prism.Navigation;
 using SwagApp2.DataStores;
+using SwagApp2.DialogService;
 using SwagApp2.Models;
 
 namespace SwagApp2.ViewModels
@@ -12,6 +13,7 @@ namespace SwagApp2.ViewModels
 	{
 	    private ToDoList _currentList;
 	    private readonly IListStore _listStore;
+	    private readonly ICustomDialogService _dialogService;
 
 	    private ObservableCollection<ListItem> _listItems;
 	    public ObservableCollection<ListItem> ListItems
@@ -41,8 +43,9 @@ namespace SwagApp2.ViewModels
 	        set => SetProperty(ref _selectedItem, value);
 	    }
 
-	    public SingleListPageViewModel(INavigationService navigationService, IListStore listStore) : base(navigationService)
+	    public SingleListPageViewModel(INavigationService navigationService, IListStore listStore, ICustomDialogService dialogService) : base(navigationService)
 	    {
+	        _dialogService = dialogService;
 	        _listStore = listStore;
 	        SelectedItem = null;
 	    }
@@ -73,7 +76,14 @@ namespace SwagApp2.ViewModels
         public DelegateCommand SaveItemCommand => new DelegateCommand(SaveCommandOnExecuted);
 	    private async void SaveCommandOnExecuted()
 	    {
-	        await UpdateList();
+	        if (await UpdateListAsync())
+	        {
+	            await _dialogService.ShowInfoDialogAsync("Succes", "Your changes have been saved", "Ok");
+	        }
+	        else
+	        {
+	            await _dialogService.ShowErrorDialogAsync("Error", "Could not save changes", "Ok");
+	        }
 	    }
 
         #region Navigation
@@ -108,15 +118,19 @@ namespace SwagApp2.ViewModels
 
         #endregion
 
-	    private async Task UpdateList()
+	    private async Task<bool> UpdateListAsync()
 	    {
+	        bool ret = false;
 	        var result = await _listStore.UpdateListAsync(_currentList.Name, _currentList);
 	        if (result != null)
 	        {
 	            //ListItems = new ObservableCollection<ListItem>(result.ListItems);
-	            SelectedItem = null;
+	            ret = true;
 	        }
-        }
+
+	        SelectedItem = null;
+            return ret;
+	    }
 
     }
 }

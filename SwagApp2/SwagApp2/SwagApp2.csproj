@@ -12,10 +12,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\CustomDialog\InfoDialog.xaml.cs">
+      <DependentUpon>InfoDialog.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Update="Views\BaseNavigationPageView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\CustomDialog\CustomErrorDialog.xaml">
+    <EmbeddedResource Update="Views\CustomDialog\InfoDialog.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\ListPageView.xaml">

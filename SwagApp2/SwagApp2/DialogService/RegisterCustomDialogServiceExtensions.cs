@@ -12,7 +12,7 @@ namespace SwagApp2.DialogService
             containerRegistry.RegisterSingleton<ICustomDialogService, CustomDialogService>();
 
             // dialogs and viewmodels
-            containerRegistry.RegisterForNavigation<CustomErrorDialog, CustomErrorDialogViewModel>();
+            containerRegistry.RegisterForNavigation<InfoDialog, InfoDialogViewModel>();
         }
     }
 }

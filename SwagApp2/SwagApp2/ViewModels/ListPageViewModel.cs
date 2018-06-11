@@ -117,7 +117,7 @@ namespace SwagApp2.ViewModels
                 var list = (ToDoList) parameters["NewList"];
                 list = await _listStore.CreateListAsync(list);
                 if (list == null)
-                    await _dialogService.ShowErrorDialog("Error", "Unable to create list!", "Ok");
+                    await _dialogService.ShowErrorDialogAsync("Error", "Unable to create list!", "Ok");
             }
 
             ListCollection = new ObservableCollection<ToDoList>(await _listStore.GetAllListsAsync());
