@@ -58,12 +58,22 @@ namespace SwagApp2.ViewModels
             new DelegateCommand(DeleteItemCommandOnExecuted, () => SelectedItem != null)
                 .ObservesProperty(() => SelectedItem);
 
-	    private async void DeleteItemCommandOnExecuted()
+	    private void DeleteItemCommandOnExecuted()
 	    {
 	        if (_currentList.RemoveItem(_selectedItem.Name))
 	        {
-	            await UpdateList();
-	        }	        
+	            var index = ListItems.IndexOf(_selectedItem);
+	            if (index >= 0)
+	            {
+	                ListItems.RemoveAt(index);
+	            }
+            }
+	    }
+
+        public DelegateCommand SaveItemCommand => new DelegateCommand(SaveCommandOnExecuted);
+	    private async void SaveCommandOnExecuted()
+	    {
+	        await UpdateList();
 	    }
 
         #region Navigation
@@ -85,13 +95,13 @@ namespace SwagApp2.ViewModels
 
 	    }
 
-	    public override async void OnNavigatedTo(INavigationParameters parameters)
+	    public override void OnNavigatedTo(INavigationParameters parameters)
 	    {
 	        if (parameters.ContainsKey("ListItem"))
 	        {
 	            if (_currentList.AddItem((ListItem)parameters["ListItem"]))
 	            {
-	                await UpdateList();
+	                ListItems.Add((ListItem)parameters["ListItem"]);
 	            }
 	        }
         }
@@ -103,7 +113,7 @@ namespace SwagApp2.ViewModels
 	        var result = await _listStore.UpdateListAsync(_currentList.Name, _currentList);
 	        if (result != null)
 	        {
-	            ListItems = new ObservableCollection<ListItem>(result.ListItems);
+	            //ListItems = new ObservableCollection<ListItem>(result.ListItems);
 	            SelectedItem = null;
 	        }
         }

@@ -2,13 +2,13 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
-             xmlns:customControls="clr-namespace:SwagApp2.CustomControls;assembly=SwagApp2"
+             xmlns:customControls="clr-namespace:SwagApp2.CustomControls"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="SwagApp2.Views.SingleListPage"
              Title="{Binding Title}"
              BackgroundColor="{StaticResource BackGroundColor}">
 
-    <StackLayout Padding="25" Spacing="25">
+    <StackLayout Padding="25" Spacing="25" HorizontalOptions="FillAndExpand">
 
         <StackLayout Orientation="Horizontal">
             <Label Text="Created by:"></Label>
@@ -20,12 +20,33 @@
             <Label Text="{Binding Created}"/>
         </StackLayout>
 
-        <ListView ItemsSource="{Binding ListItems}" SelectedItem="{Binding SelectedItem}">
+        <ListView x:Name="ItemsListView" ItemsSource="{Binding ListItems}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" RowHeight="60" BindingContext="{Binding .}"
+                  Margin="0,-5,0,0">
 
             <ListView.ItemTemplate>
 
                 <DataTemplate>
-                    <TextCell Text="{Binding Name}" Detail="{Binding Description}"/>
+
+                    <ViewCell>
+                        
+                        <StackLayout Orientation="Horizontal" Padding="10">
+                            
+                            <StackLayout Orientation="Vertical">
+                                <Label Text="{Binding Name}" VerticalOptions="Center" TextColor="{StaticResource GreenOkTextColor}" FontAttributes="Bold" FontSize="Medium"/>
+                                <Label Text="{Binding Description}" VerticalOptions="Center" FontSize="Small"/>
+                            </StackLayout>
+
+                            <customControls:Checkbox HorizontalOptions="EndAndExpand"
+                                                     VerticalOptions="FillAndExpand"
+                                                     IsChecked="{Binding Checked}"
+                                                     >
+
+                            </customControls:Checkbox>
+
+                        </StackLayout>
+
+                    </ViewCell>
+
                 </DataTemplate>
 
             </ListView.ItemTemplate>
@@ -37,6 +58,8 @@
                     <customControls:ButtonWithoutShadow Text="+" Command="{Binding AddItemCommand}"/>
 
                     <customControls:ButtonWithoutShadow Text="-" Command="{Binding DeleteItemCommand}"/>
+
+                    <customControls:ButtonWithoutShadow Image="saveicon.png" Command="{Binding SaveItemCommand}"/>
 
                 </StackLayout>
 
