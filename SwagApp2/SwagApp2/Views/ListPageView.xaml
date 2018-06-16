@@ -40,7 +40,8 @@
                               RowHeight="{Binding ListRowHeight, Mode=OneTime}"
                               VerticalOptions="FillAndExpand"
                               SelectedItem="{Binding SelectedList}"
-                              HeightRequest="{Binding ListHeight}">
+                              HeightRequest="{Binding ListHeight}"
+                              IsPullToRefreshEnabled="True">
 
                         <ListView.ItemTemplate>
 

@@ -68,10 +68,6 @@ namespace SwagApp2
             containerRegistry.RegisterForNavigation<ListPageView, ListPageViewModel>(); // List Page    
             containerRegistry.RegisterForNavigation<SingleListPage, SingleListPageViewModel>(); // Single List Edit Page
             containerRegistry.RegisterForNavigation<UserSettingsPage, UserSettingsPageViewModel>(); // Settings
-
-            // Modals
-            containerRegistry.RegisterForNavigation<NewListPageModal, NewListPageModalViewModel>();
-            containerRegistry.RegisterForNavigation<NewListItemPageModal, NewListItemPageModalViewModel>();
         }
     }
 }

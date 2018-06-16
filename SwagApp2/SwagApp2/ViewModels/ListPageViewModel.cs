@@ -7,6 +7,7 @@ using Prism.Navigation;
 using Prism.Services;
 using SwagApp2.DataStores;
 using SwagApp2.DialogService;
+using SwagApp2.DialogService.ToDoListDialogs;
 using SwagApp2.Models;
 using Xamarin.Forms;
 
@@ -17,6 +18,8 @@ namespace SwagApp2.ViewModels
         private readonly IListStore _listStore;
         private readonly IApplicationUserService _applicationUserService;
         private readonly ICustomDialogService _dialogService;
+        private readonly IToDoListDialogService _toDoListService;
+
         private readonly bool _isValid;
 
         private ToDoList _selectedList;
@@ -57,12 +60,14 @@ namespace SwagApp2.ViewModels
         public ListPageViewModel(INavigationService navigationService,
             IListStore listStore,
             IApplicationUserService applicationUserService,
-            ICustomDialogService dialogService)
+            ICustomDialogService dialogService,
+            IToDoListDialogService toDoListService)
             : base(navigationService)
         {
             _listStore = listStore;
             _applicationUserService = applicationUserService;
             _dialogService = dialogService;
+            _toDoListService = toDoListService;
 
             if (_applicationUserService.DisplayName == null || _applicationUserService.Name == null)
             {
@@ -84,7 +89,18 @@ namespace SwagApp2.ViewModels
 
         private async void NewListCommandExecuted()
         {
-            await NavigationService.NavigateAsync(new Uri("NewListPageModal", UriKind.Relative));
+            var newList = await _toDoListService.ShowCreateToDoListModalAsync();
+            if (newList != null)
+            {
+                newList.Owner = _applicationUserService.DisplayName;
+                if (await _listStore.CreateListAsync(newList) == null)
+                    await _dialogService.ShowErrorDialogAsync("Error", "Could not create list!", "Ok");
+                else
+                {
+                    ListCollection.Insert(0, newList);
+                    ListHeight = ListCollection.Count * ListRowHeight;
+                }                                       
+            }           
         }
 
         public DelegateCommand EditListCommand => new DelegateCommand(UpdateListCommandExecuted, () => SelectedList != null && _isValid )
@@ -112,26 +128,11 @@ namespace SwagApp2.ViewModels
 
         public override async void OnNavigatingTo(INavigationParameters parameters)
         {
-            if (parameters.ContainsKey("NewList"))
+            if (ListCollection == null)
             {
-                var list = (ToDoList) parameters["NewList"];
-                list = await _listStore.CreateListAsync(list);
-                if (list == null)
-                    await _dialogService.ShowErrorDialogAsync("Error", "Unable to create list!", "Ok");
+                ListCollection = new ObservableCollection<ToDoList>(await _listStore.GetAllListsAsync());
+                ListHeight = ListCollection.Count * ListRowHeight;
             }
-
-            ListCollection = new ObservableCollection<ToDoList>(await _listStore.GetAllListsAsync());
-            ListHeight = ListCollection.Count * ListRowHeight;
-        }
-
-        public override void OnNavigatedFrom(INavigationParameters parameters)
-        {
-
-        }
-
-        public override void OnNavigatedTo(INavigationParameters parameters)
-        {
-            
         }
 
         #endregion
